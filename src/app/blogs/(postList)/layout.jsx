@@ -1,4 +1,6 @@
-import CategoryList from "./-components/CategoryList";
+import CategoryList from "../-components/CategoryList";
+
+
 
 export const metadata = {
   title: "بلاگ ها",
