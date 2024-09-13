@@ -10,15 +10,19 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.1.5",
+    "@hookform/resolvers": "^3.9.0",
     "autoprefixer": "10.4.14",
-    "axios": "^1.4.0",
+    "axios": "^1.7.7",
     "eslint": "8.40.0",
     "heroicons": "^2.1.5",
     "next": "^15.0.0-rc.0",
     "react": "^19.0.0-rc-3dfd5d9e-20240910",
     "react-dom": "^19.0.0-rc-3dfd5d9e-20240910",
+    "react-hook-form": "^7.53.0",
+    "react-hot-toast": "^2.4.1",
     "react-loader-spinner": "^5.3.4",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "eslint": "^8",

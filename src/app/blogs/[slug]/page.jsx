@@ -21,6 +21,7 @@ export async function generateMetadata({params}){
 export default async function singlePost({params}) {
 
     const post = await getPostBySlug(params.slug);
+    if (!post) notFound();
 
     if (!post) notFound();
     return (
