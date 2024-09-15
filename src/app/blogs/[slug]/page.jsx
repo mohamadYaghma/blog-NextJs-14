@@ -23,7 +23,6 @@ export default async function singlePost({params}) {
     const post = await getPostBySlug(params.slug);
     if (!post) notFound();
 
-    if (!post) notFound();
     return (
         <div className="text-secondary-600 max-w-screen-md mx-auto">
             <h1 className="text-secondary-700 text-2xl font-bold mb-8">
