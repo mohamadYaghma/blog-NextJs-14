@@ -1,7 +1,7 @@
 "use client";
 import {
   getUserApi,
-  logoutApi,
+  // logoutApi,
   signupApi,
   singinApi,
 } from "@/services/authService";
@@ -46,11 +46,11 @@ function authReducer(state, action) {
         user: action.payload,
         isAuthenticated: true,
       };
-    case "logout":
-      return {
-        user: null,
-        isAuthenticated: false,
-      };
+    // case "logout":
+    //   return {
+    //     user: null,
+    //     isAuthenticated: false,
+    //   };
     default:
       throw new Error("Unknown action!");
   }
@@ -62,6 +62,7 @@ export default function AuthProvier({ children }) {
     authReducer,
     initialState
   );
+
   async function signin(values) {
     dispatch({ type: "loading" });
     try {
@@ -104,23 +105,22 @@ export default function AuthProvier({ children }) {
         data: { user },
       } = await getUserApi();
       dispatch({ type: "user/loaded", payload: user });
-      console.log(user);
     } catch (err) {
       const error = err?.response?.data?.message;
       dispatch({ type: "rejected", payload: error });
     }
   }
 
-  async function logout() {
-    try {
-      await logoutApi();
-      router.push("/");
-      // document.location.href = "/";
-      dispatch({ type: "logout" });
-    } catch (error) {
-      toast.error(error);
-    }
-  }
+  // async function logout() {
+  //   try {
+  //     await logoutApi();
+  //     router.push("/");
+  //     // document.location.href = "/";
+  //     dispatch({ type: "logout" });
+  //   } catch (error) {
+  //     toast.error(error);
+  //   }
+  // }
 
   useEffect(() => {
     // getUser();
@@ -138,7 +138,7 @@ export default function AuthProvier({ children }) {
         isLoading,
         signin,
         signup,
-        logout,
+        // logout,
         getUser,
       }}
     >

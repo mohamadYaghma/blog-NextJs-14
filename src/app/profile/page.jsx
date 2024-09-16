@@ -1,7 +1,7 @@
 
 export default function profile() {
     return (
-        <div>
+        <div className="text-white">
             profile
         </div>
     )

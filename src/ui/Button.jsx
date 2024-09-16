@@ -8,14 +8,14 @@ const btnType ={
 
 export default function Button({
     children,
-    onClick,
+    // onClick,
     variant = "primary",
     className,
     ...rest
 }) {
   return (
     <button 
-        onclick={onClick}
+        // onclick={onClick}
         className={`btn ${btnType[variant]} ${className}`}
         {...rest}
     >

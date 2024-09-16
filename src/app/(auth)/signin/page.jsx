@@ -51,7 +51,12 @@ export default function SignIn() {
                     isRequired
                     errors={errors}
                 />
-                <Button type="submit" variant="primary" className="w-full">ورود</Button>
+                <Button
+                    type="submit"
+                    className="py-3 px-4 btn btn--primary rounded-xl w-full"
+                    >
+                    ورود
+                </Button>
             </form>
             <div className="flex justify-center align-middle items-center ">
                 <Link href="/signup" className="text-secondary-500 mt-6 text-center btn border border-primary-500 w-2/4 hover:bg-primary-900 hover:text-secondary-900 transition-all ease-out duration-300">
