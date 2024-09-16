@@ -3,18 +3,9 @@ import CoverImage from "./CoverImage";
 import { ClockIcon } from "@heroicons/react/24/outline";
 import Author from "./Author";
 import PostInteration from "./PostInteration";
-import { getPosts } from "@/services/PostServices";
-import setCookieOnReq from "@/utils/setCookieOnReq";
-import { cookies } from "next/headers";
 
-export default async function PostList() {
-    // get data from cookies
-  const cookieStore = cookies();
-  const options = setCookieOnReq(cookieStore);
-    // end cook
-    // shot options in get post for get data => Like and bookmark and comment
-  const posts = await getPosts(options);
 
+export default async function PostList({ posts }) {
   return posts.length > 0 ? (
     <div className="grid grid-cols-12 gap-8">
       {posts.map((post) => {
