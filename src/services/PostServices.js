@@ -10,11 +10,29 @@ export async function getPostBySlug(slug){
     return post
 }
 
-export async function getPosts(options){
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/post/list`,options)
-    const {data} = await res.json()
-    const {posts} = data || {} 
-    return posts
+export async function getPosts(queries, options) {
+    try {
+        const url = `${process.env.NEXT_PUBLIC_BASE_URL}/post/list?${queries}`;
+        console.log('Fetching posts from:', url); // خطایابی URL
+        console.log('With options:', options); // خطایابی options
+
+        const res = await fetch(url, options);
+
+        if (!res.ok) {
+            console.error('Failed to fetch posts:', res.status, res.statusText);
+            throw new Error(`Error: ${res.status} ${res.statusText}`);
+        }
+
+        const { data } = await res.json();
+        const { posts } = data || {};
+
+        console.log('Posts fetched:', posts); // خطایابی داده‌ها
+
+        return posts;
+    } catch (error) {
+        console.error('Error fetching posts:', error);
+        return [];
+    }
 }
 
 
