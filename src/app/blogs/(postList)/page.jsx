@@ -11,17 +11,16 @@ import queryString from 'query-string';
 // export const experimental_ppr = true; //static + dynamic => ppr
 // end ppr
 
-export default async function BlogsPage({searchParams}) {
+export default async function BlogsPage({searchParams }) {
 
       const queries = queryString.stringify(searchParams);
-      console.log("Search Params:", searchParams); // برای خطایابی
-      console.log("Query String:", queries); // برای خطایابی
+
       // get data from cookies
       const cookieStore = cookies();
       const options = setCookieOnReq(cookieStore);
         // end cook
         // shot options in get post for get data => Like and bookmark and comment
-      const posts = await getPosts(queries ,options);
+      const posts = await getPosts(queries,options);
 
   return <PostList posts={posts}/>
 }
