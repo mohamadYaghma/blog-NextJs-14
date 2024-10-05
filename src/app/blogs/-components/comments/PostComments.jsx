@@ -4,32 +4,49 @@ import classNames from "classnames";
 import Comment from "./Comment";
 import Button from "@/ui/Button";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
+import Modal from "@/ui/Modal";
+import { useState } from "react";
+import CommentForm from "./CommentForm";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 function PostComments({ post: { comments, _id: postId } }) {
+  const [open , setOpen] = useState(false);
+  const [parent , setParent] = useState(null);
+  const {user} = useAuth();
+  const router = useRouter();
+  const addNewCommentHandler  = parent =>{
+    if(!user){
+      router.push("/signin")
+      return;
+    }
+    setParent(parent)
+    setOpen(true)
+  }
   return (
     <div className="mb-10">
+      <Modal  
+        title={
+          parent ? "پاسخ به نطر" : "نظر جدید"
+        }
+        description={
+          parent ? parent.user.name:"نظر خود را وارد کنید"
+        }
+        open={open}
+        onClose={()=>setOpen(false)}
+      >
+        <CommentForm />
+      </Modal>
       <div className="flex flex-col items-center lg:flex-row justify-between gap-y-3 mb-8">
         <h2 className="text-2xl font-bold test-secondary-800">نظرات</h2>
         <Button
-          // onClick={()=> addNewCommentHandler(null)}
+          onClick={()=> addNewCommentHandler(null)}
           variant="outline"
           className="flex items-center py-2"
         >
           <QuestionMarkCircleIcon className="w-4 ml-2" />
           <span>ثبت نظر جدید</span>
         </Button>
-        {/* <Modal
-            title={parent ? "پاسخ به نظر" : "نظر جدید"}
-            discription={parent ? parent._id : null}
-            open={isOpen}
-            onClose={()=> setOpen(false)}
-         >
-             <CommentForm 
-                postId={postId}
-                parentId ={ parent ? parent._id : null}
-                onClose={()=> setOpen(false)}
-             />
-         </Modal> */}
       </div>
       <div className="space-y-8 post-comments bg-secondary-0 rounded-xl py-6 px-3 lg:px-6">
         {comments.length > 0 ? (
@@ -39,7 +56,7 @@ function PostComments({ post: { comments, _id: postId } }) {
                 <div className="border border-secondary-200 rounded-xl p-2 sm:p-4 mb-3">
                   <Comment
                     comment={comment}
-                    onAddComment={() => addNewCommentHandler(comment)}
+                    onAddComment={() =>addNewCommentHandler(comment)}
                   />
                 </div>
                 <div className="post-comments__answer mr-2 sm:mr-8 space-y-3">
