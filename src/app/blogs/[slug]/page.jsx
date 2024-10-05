@@ -2,6 +2,7 @@ import { getPostBySlug, getPosts } from "@/services/PostServices";
 import Image from "next/image"
 import { notFound } from "next/navigation";
 import RelatedPost from "../-components/RelatedPost";
+import PostComments from "../-components/comments/PostComments";
 
 // ssg
 export const dynamicParams = false;
@@ -39,6 +40,7 @@ export default async function singlePost({params}) {
                 />
             </div>
             {post.related.length>0 && <RelatedPost posts={post.related} /> }
+            <PostComments post={post}/>
         </div>
     )
 }
