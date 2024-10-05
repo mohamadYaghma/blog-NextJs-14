@@ -1,26 +1,28 @@
-// import { Suspense } from "react";
-// import Spinner from "@/ui/Spinner";
+import { cookies } from "next/headers";
+import setCookieOnReq from "@/utils/setCookieOnReq";
+import queryString from "query-string";
 import PostList from "../-components/PostList";
 import { getPosts } from "@/services/PostServices";
-import setCookieOnReq from "@/utils/setCookieOnReq";
-import { cookies } from "next/headers";
-import queryString from 'query-string';
 
-// ppr start
-// every section get in Suspense is dynamic rendring and other side static
-// export const experimental_ppr = true; //static + dynamic => ppr
-// end ppr
+export default async function BlogsPage({ searchParams }) {
+  const queries = queryString.stringify(searchParams);
+  const cookieStore = cookies();
+  const options = setCookieOnReq(cookieStore);
+  const posts = await getPosts(queries, options);
 
-export default async function BlogsPage({searchParams }) {
+  const { search } = searchParams;
 
-      const queries = queryString.stringify(searchParams);
-
-      // get data from cookies
-      const cookieStore = cookies();
-      const options = setCookieOnReq(cookieStore);
-        // end cook
-        // shot options in get post for get data => Like and bookmark and comment
-      const posts = await getPosts(queries,options);
-
-  return <PostList posts={posts}/>
+  return (
+    <>
+      {search ? (
+        <p className="mb-4 text-secondary-700">
+          {posts.length === 0
+            ? " هیچ پستی با این مشخصات پیدا نشد "
+            : `نشان دادن ${posts.length} نتیجه برای`}
+          <span className="font-bold">&quot;{search}&quot;</span>
+        </p>
+      ) : null}
+      <PostList posts={posts} />
+    </>
+  );
 }

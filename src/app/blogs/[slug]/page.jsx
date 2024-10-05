@@ -1,6 +1,7 @@
 import { getPostBySlug, getPosts } from "@/services/PostServices";
 import Image from "next/image"
 import { notFound } from "next/navigation";
+import RelatedPost from "../-components/RelatedPost";
 
 // ssg
 export const dynamicParams = false;
@@ -37,7 +38,7 @@ export default async function singlePost({params}) {
                     src={post.coverImageUrl}
                 />
             </div>
-            {/* {post.related.lengh>0? <RelatedPost posts={post.related} /> : null } */}
+            {post.related.length>0 && <RelatedPost posts={post.related} /> }
         </div>
     )
 }

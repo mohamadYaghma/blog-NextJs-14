@@ -6,7 +6,7 @@ import PostInteration from "./PostInteration";
 
 export default async function PostList({ posts }) {
 
-  return posts && Array.isArray(posts) && posts.length > 0 ? (
+  return posts.length > 0 ? (
     <div className="grid grid-cols-12 gap-8">
       {posts.map((post) => {
         return (
