@@ -35,7 +35,7 @@ function PostComments({ post: { comments, _id: postId } }) {
         open={open}
         onClose={()=>setOpen(false)}
       >
-        <CommentForm />
+        <CommentForm onClose={()=>setOpen(false)} postId={postId} parentId={parent ? parent._id : null }/>
       </Modal>
       <div className="flex flex-col items-center lg:flex-row justify-between gap-y-3 mb-8">
         <h2 className="text-2xl font-bold test-secondary-800">نظرات</h2>

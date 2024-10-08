@@ -1,4 +1,26 @@
 "use server"
-export async function createComment(formData){
-    console.log(formData.get("text"));
+
+import { createCommentApi } from "@/services/commentService"
+import setCookieOnReq from "@/utils/setCookieOnReq";
+import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers"
+
+export async function createComment(prevState , {formData,postId,parentId}){
+
+    const cookiesStore = cookies();
+    const option = setCookieOnReq(cookiesStore);
+
+    const rawFormData = {
+        postId,
+        parentId,
+        text: formData.get("text"),
+    }
+   try {
+       const { message } = await  createCommentApi(rawFormData , option)
+            revalidatePath("/blogs/[slug]");
+            return {message}
+   } catch (error) {
+        const errorMs =(error?.response?.data?.message);
+        return {errorMs}
+   }
 }
