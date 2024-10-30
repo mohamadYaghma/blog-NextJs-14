@@ -25,7 +25,7 @@ function Header() {
         >
           {isOpenDrawer ? <XMarkIcon /> : <Bars3Icon />}</ButtonIcon>
         <span className="text-sm lg:text-lg font-bold text-secondary-700">
-          سلام{user?.name}
+          سلام {user?.name} عزیز
         </span>
         <Link href="/profile">
           <Avatar src={user?.avatarUrl} />
