@@ -42,7 +42,7 @@ export default function Header() {
                         user ? (
                             <NavLink path="/profile" > پروفایل</NavLink>
                         ) : (
-                            <NavLink path="/signin" > ورود</NavLink>
+                            <NavLink path="/signup" > ورود</NavLink>
                         )
                     }
                 </li>

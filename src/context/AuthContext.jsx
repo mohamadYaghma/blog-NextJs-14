@@ -1,12 +1,8 @@
 "use client";
-import {
-  getUserApi,
-  // logoutApi,
-  signupApi,
-  singinApi,
-} from "@/services/authService";
+
+import { getUserApi, signupApi, singinApi } from "@/services/authService";
 import { useRouter } from "next/navigation";
-import { createContext, useContext, useEffect, useReducer } from "react";
+import { createContext, useReducer, useContext, useEffect } from "react";
 import toast from "react-hot-toast";
 
 const AuthContext = createContext();
@@ -18,7 +14,7 @@ const initialState = {
   error: null,
 };
 
-function authReducer(state, action) {
+const authReducer = (state, action) => {
   switch (action.type) {
     case "loading":
       return {
@@ -46,19 +42,12 @@ function authReducer(state, action) {
         user: action.payload,
         isAuthenticated: true,
       };
-    // case "logout":
-    //   return {
-    //     user: null,
-    //     isAuthenticated: false,
-    //   };
-    default:
-      throw new Error("Unknown action!");
   }
-}
+};
 
-export default function AuthProvier({ children }) {
+export default function AuthProvider({ children }) {
   const router = useRouter();
-  const [{ user, isAuthenticated, isLoading }, dispatch] = useReducer(
+  const [{ user, isAuthenticated, isLoading, error }, dispatch] = useReducer(
     authReducer,
     initialState
   );
@@ -66,64 +55,45 @@ export default function AuthProvier({ children }) {
   async function signin(values) {
     dispatch({ type: "loading" });
     try {
-      const {
-        data: { message, user },
-      } = await singinApi(values);
+      const { user, message } = await singinApi(values);
       dispatch({ type: "signin", payload: user });
       toast.success(message);
       router.push("/profile");
-    } catch (err) {
-      const error = err?.response?.data?.message;
-      dispatch({ type: "rejected", payload: error });
-      toast.error(error);
+    } catch (error) {
+      const errorMsg = error?.response?.data?.message;
+      dispatch({ type: "rejected", payload: errorMsg });
+      toast.error(errorMsg);
     }
   }
 
   async function signup(values) {
     dispatch({ type: "loading" });
     try {
-      const {
-        data: { message, user },
-      } = await signupApi(values);
+      const { user, message } = await signupApi(values);
       dispatch({ type: "signup", payload: user });
       toast.success(message);
       router.push("/profile");
-    } catch (err) {
-      const error = err?.response?.data?.message;
-      dispatch({ type: "rejected", payload: error });
-      toast.error(error);
+    } catch (error) {
+      const errorMsg = error?.response?.data?.message;
+      dispatch({ type: "rejected", payload: errorMsg });
+      toast.error(errorMsg);
     }
   }
 
   async function getUser() {
     dispatch({ type: "loading" });
     try {
-      // await new Promise((resolve, reject) =>
-      //   setTimeout(() => resolve("ddd"), 4000)
-      // );
-      const {
-        data: { user },
-      } = await getUserApi();
+      //   await new Promise((resolve) => setTimeout(resolve, 3000));
+      const { user } = await getUserApi();
       dispatch({ type: "user/loaded", payload: user });
-    } catch (err) {
-      const error = err?.response?.data?.message;
-      dispatch({ type: "rejected", payload: error });
+    } catch (error) {
+      const errorMsg = error?.response?.data?.message;
+      dispatch({ type: "rejected", payload: errorMsg });
+      // toast.error(errorMsg);
     }
   }
 
-  // async function logout() {
-  //   try {
-  //     await logoutApi();
-  //     router.push("/");
-  //     // document.location.href = "/";
-  //     dispatch({ type: "logout" });
-  //   } catch (error) {
-  //     toast.error(error);
-  //   }
-  // }
-
   useEffect(() => {
-    // getUser();
     async function fetchData() {
       await getUser();
     }
@@ -132,15 +102,7 @@ export default function AuthProvier({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{
-        user,
-        isAuthenticated,
-        isLoading,
-        signin,
-        signup,
-        // logout,
-        getUser,
-      }}
+      value={{ user, isAuthenticated, isLoading, signin, signup }}
     >
       {children}
     </AuthContext.Provider>
@@ -149,6 +111,6 @@ export default function AuthProvier({ children }) {
 
 export function useAuth() {
   const context = useContext(AuthContext);
-  if (context === undefined) throw new Error("not found Auth context");
-  return useContext(AuthContext);
+  if (context === undefined) throw new Error("not found Auth Context");
+  return context;
 }
